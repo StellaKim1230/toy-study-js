@@ -58,38 +58,60 @@
 // }
 // console.log(factorial(5));
 
-Function.prototype.customBind = function(oThis) {
-  if (typeof this !== "function") {
-    // ECMAScript 5 내부 IsCallable 함수와
-    // 가능한 가장 가까운 것
-    throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+// Function.prototype.customBind = function(bindThis) {
+//   console.log(this);
+//   if (typeof this !== "function") {
+//     // ECMAScript 5 내부 IsCallable 함수와
+//     // 가능한 가장 가까운 것
+//     throw new TypeError("Function.prototype.bind - what is trying to be bound is not callable");
+//   }
+//   var aArgs = Array.prototype.slice.call(arguments, 1),
+//     fToBind = this,
+//     fNOP = function() {},
+//     fBound = function() {
+//       return fToBind.apply(this instanceof fNOP ? this : bindThis, aArgs.concat(Array.prototype.slice.call(arguments)));
+//     };
+
+//   if (this.prototype) {
+//     // Function.prototype은 prototype 속성이 없음
+//     fNOP.prototype = this.prototype;
+//   }
+//   fBound.prototype = new fNOP();
+
+//   return fBound;
+// };
+
+// var module = {
+//   x: 42,
+//   getX: function() {
+//     return this.x;
+//   }
+// };
+
+// var unboundGetX = module.getX;
+// console.log(unboundGetX());
+
+// var boundGetX = unboundGetX.customBind(module);
+// console.log(boundGetX());
+
+function Person() {
+  this.name = 'anonymous'
+  this.job = 'none'
+  this.sayHello = function() {
+    alert('Hello, my name is ' + this.name)
   }
+}
 
-  var aArgs = Array.prototype.slice.call(arguments, 1),
-    fToBind = this,
-    fNOP = function() {},
-    fBound = function() {
-      return fToBind.apply(this instanceof fNOP ? this : oThis, aArgs.concat(Array.prototype.slice.call(arguments)));
-    };
+function Unikys() {
+  var obj = new Person()
+  obj.name = 'Unikys'
+  obj.job = 'Programmer'
+  return obj
+}
 
-  if (this.prototype) {
-    // Function.prototype은 prototype 속성이 없음
-    fNOP.prototype = this.prototype;
-  }
-  fBound.prototype = new fNOP();
+var unikys = new Unikys()
 
-  return fBound;
-};
+unikys.sayHello()
 
-var module = {
-  x: 42,
-  getX: function() {
-    return this.x;
-  }
-};
-
-var unboundGetX = module.getX;
-console.log(unboundGetX());
-
-var boundGetX = unboundGetX.customBind(module);
-console.log(boundGetX());
+console.log(unikys instanceof Unikys)
+console.log(unikys instanceof Person)
